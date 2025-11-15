@@ -1,0 +1,65 @@
+.testimonial-content .rating-stars {
+  margin-bottom: 25px !important;
+}
+.guten-postblock .guten-block-pagination {
+  margin: 0 0 3px !important;
+}
+
+.commentlist .depth-1 {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  background-color: var(--wp--preset--color--theme-0) !important;
+  padding: 6px 16px !important;
+  border-radius: 12px;
+  border: solid 1px var(--wp--preset--color--theme-4);
+}
+.commentlist .depth-2,
+.commentlist .depth-3,
+.commentlist .depth-4,
+.commentlist .depth-5 {
+  margin-left: 37px;
+}
+.commentlist .vcard img.photo {
+  width: 40px;
+  height: 40px;
+  margin-top: 2px;
+  margin-right: 16px;
+  border-radius: 100%;
+}
+.comment-body .fn {
+  font-family: "Poppins";
+  font-size: 16px;
+  line-height: 1.5em;
+  font-weight: 600 !important;
+}
+.comment-body {
+  padding: 16px;
+  background-color: var(--wp--preset--color--theme-6);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+.comment-body .says {
+  display: none;
+}
+.comment-body .comment-edit-link {
+  color: var(--wp--preset--color--theme-2) !important;
+}
+.comment-body .reply {
+  margin-bottom: 0px !important;
+  padding-left: 57px !important;
+}
+.comment-body .comment-content {
+  padding-left: 57px !important;
+}
+@media (max-width: 767px) {
+  .commentlist .depth-2,
+  .commentlist .depth-3,
+  .commentlist .depth-4,
+  .commentlist .depth-5 {
+    margin-left: 0px;
+  }
+  .comment-body .fn {
+    font-size: 14px;
+  }
+}

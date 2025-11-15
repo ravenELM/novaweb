@@ -1,0 +1,229 @@
+/* ============================================
+   ORIGINAL CAROUSEL STYLES (unchanged)
+   ============================================ */
+.pokemon-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 30px auto;
+  background: #14151b;
+  color: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  min-height: 460px;
+  border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+
+.carousel-slide .slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: scale(1.95);
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.carousel-slide .slide.active {
+  opacity: 1;
+  position: relative;
+  transform: scale(1);
+} 
+
+.slide h2 {
+  margin: 0 0 8px;
+  font-size: 1.6em;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.slide .level-badge {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: #6f90ff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: .9em;
+}
+
+.slide img.poke-img {
+  display: block;
+  margin: 0 auto 8px;
+  width: 200px; height: auto;
+}
+
+.slide-description {
+  text-align: center;
+  font-size: .95em;
+  color: #ccc;
+  margin-bottom: 12px;
+}
+
+.slide .types {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.slide .types .type-icon {
+  width: 55px; height: 55px;
+  margin: 0 -5px;
+  vertical-align: middle;
+}
+
+.slide .stats {
+  margin-top: 12px;
+}
+
+.slide .stat-row {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+}
+
+.slide .stat-label {
+  width: 60px;
+  text-transform: capitalize;
+}
+
+.slide .stat-bar-bg {
+  flex: 1;
+  height: 10px;
+  background: #333;
+  border-radius: 5px;
+  margin: 0 8px;
+  overflow: hidden;
+}
+
+.slide .stat-bar {
+  height: 10px;
+  border-radius: 5px;
+}
+
+.slide .stat-bar.stat-hp     { background: linear-gradient(90deg, #ff4d4d, #ff9999); }
+.slide .stat-bar.stat-attack { background: linear-gradient(90deg, #ffae42, #ffd280); }
+.slide .stat-bar.stat-def    { background: linear-gradient(90deg, #4d79ff, #99adff); }
+.slide .stat-bar.stat-speed  { background: linear-gradient(90deg, #4dff4d, #99ff99); }
+
+.slide .stat-value {
+  width: 40px;
+  text-align: right;
+}
+
+/* ============================================
+   WRAPPER: carousel + grid
+   ============================================ */
+
+.pokemon-carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+/* Mobile: center carousel */
+@media (max-width: 767px) {
+  .pokemon-carousel {
+    margin: 0 auto;
+  }
+}
+
+/* Desktop: side-by-side */
+@media (min-width: 768px) {
+  .pokemon-carousel-wrapper {
+    flex-direction: row;
+    justify-content: center; /* center both columns */
+    align-items: center;
+  }
+  .pokemon-carousel {
+    flex: none;
+    width: 420px;
+    margin: 30px 0;
+  }
+}
+
+/* ============================================
+   GRID: 2 cols mobile, 3 cols desktop
+   + FIXED RECTANGULAR CARDS
+   ============================================ */
+
+/* Base grid: 2 columns on mobile */
+.pokemon-grid {
+  display: grid;
+  gap: 24px 16px;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: center;
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 768px) {
+  .pokemon-grid {
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+  }
+}
+
+/* Each card: fixed height rectangle */
+.pokemon-grid .grid-item {
+  background: #14151b;
+  border-radius: 16px;
+  min-height: 170px;
+  padding: 14px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+/* Level badge */
+.pokemon-grid .grid-item .level-badge {
+  position: static;
+  align-self: flex-end;
+  background: #6f90ff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  margin-bottom: 4px;
+}
+
+/* Pokémon image */
+.pokemon-grid .grid-item .grid-img {
+  width: 40%;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+
+/* Name */
+.pokemon-grid .grid-item h3 {
+  margin: 0;
+  font-size: 1em;
+  text-transform: capitalize;
+}
+
+/* Types row: keep icons contained */
+.pokemon-grid .grid-item .types {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.pokemon-grid .grid-item .types .type-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* reuse hover styles on active */
+.pokemon-grid .grid-item:hover,
+.pokemon-grid .grid-item.active {
+  box-shadow: 0 0 0 2px #6f90ff;
+  cursor: pointer;
+}

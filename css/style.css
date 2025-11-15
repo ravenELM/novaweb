@@ -1,0 +1,50 @@
+/*
+Theme Name: Pirus
+Description: Pirus is a sleek and modern website template designed specifically for creative and digital agencies. With its bold dark theme, it sets the perfect tone for agencies that want to stand out in the digital space. The minimalist yet striking design enhances user experience, focusing on showcasing your services, portfolio, and team in a visually stunning way.
+Author: Jegstudio
+Author URI: https://support.jegtheme.com/
+Theme URI: https://fse.jegtheme.com/pirus/
+Version: 1.0.0
+Stable tag: 1.0.0
+Requires at least: 6.2
+Tested up to: 6.6
+Requires PHP: 7.4.21
+License: GNU General Public License v3 or later.
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Text Domain: pirus
+Tags: block-patterns,custom-background,custom-colors,custom-header,custom-logo,full-site-editing,full-width-template
+*/
+
+:root{
+    
+}
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .block-library-block__reusable-block-container {
+    max-width: 100%;
+}
+
+
+/* Balance menu item styling */
+.menu-item-balance {
+    display: inline-block;
+    margin: 0 15px;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Balance text with icon */
+.nav-balance {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1em;
+   font-family: 'Poppins';
+}
+
+/* Icon styling */
+.nav-balance .balance-icon {
+    width: 50px;
+    height: auto;     /* Height adjusts automatically */
+    margin-right: 8px;
+}
