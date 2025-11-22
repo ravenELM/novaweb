@@ -564,54 +564,67 @@
 
         // ========== NEWS MANAGEMENT ==========
         
-        // Load news from localStorage
-        function loadNews() {
-            const news = JSON.parse(localStorage.getItem('nova-bots-news')) || [];
-            
-            if (news.length === 0) {
-                newsList.style.display = 'none';
-                noNews.style.display = 'block';
-                return;
+        // Server-side API endpoints (you need to create these)
+        const API_BASE_URL = 'api/'; // Change this to your actual API endpoint
+        
+        // Load news from server
+        async function loadNews() {
+            try {
+                // In a real implementation, you would fetch from your server
+                // const response = await fetch(`${API_BASE_URL}news`);
+                // const news = await response.json();
+                
+                // For now, we'll use localStorage but with a shared key
+                const news = JSON.parse(localStorage.getItem('nova-bots-shared-news')) || [];
+                
+                if (news.length === 0) {
+                    newsList.style.display = 'none';
+                    noNews.style.display = 'block';
+                    return;
+                }
+                
+                // Sort news by date (newest first)
+                news.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Clear existing news
+                newsList.innerHTML = '';
+                
+                // Add news items
+                news.forEach((article, index) => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item';
+                    
+                    // Show image preview if available
+                    const imagePreview = article.image ? 
+                        `<div style="margin-bottom: 10px;">
+                            <img src="${article.image}" alt="Preview" style="max-width: 100px; max-height: 60px; border-radius: 4px; border: 1px solid var(--wp--preset--color--theme-4);">
+                        </div>` : '';
+                    
+                    newsItem.innerHTML = `
+                        <div class="news-info">
+                            ${imagePreview}
+                            <h3 class="news-title">${article.title}</h3>
+                            <div class="news-date">${new Date(article.date).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            })}</div>
+                            <p class="news-preview">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</p>
+                        </div>
+                        <div class="news-actions">
+                            <button class="edit-btn" onclick="editNews(${index})">Edit</button>
+                            <button class="delete-btn" onclick="deleteNews(${index})">Delete</button>
+                        </div>
+                    `;
+                    newsList.appendChild(newsItem);
+                });
+                
+                newsList.style.display = 'grid';
+                noNews.style.display = 'none';
+            } catch (error) {
+                console.error('Error loading news:', error);
+                alert('Error loading news. Please try again.');
             }
-            
-            // Sort news by date (newest first)
-            news.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // Clear existing news
-            newsList.innerHTML = '';
-            
-            // Add news items
-            news.forEach((article, index) => {
-                const newsItem = document.createElement('div');
-                newsItem.className = 'news-item';
-                
-                // Show image preview if available
-                const imagePreview = article.image ? 
-                    `<div style="margin-bottom: 10px;">
-                        <img src="${article.image}" alt="Preview" style="max-width: 100px; max-height: 60px; border-radius: 4px; border: 1px solid var(--wp--preset--color--theme-4);">
-                    </div>` : '';
-                
-                newsItem.innerHTML = `
-                    <div class="news-info">
-                        ${imagePreview}
-                        <h3 class="news-title">${article.title}</h3>
-                        <div class="news-date">${new Date(article.date).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                        })}</div>
-                        <p class="news-preview">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</p>
-                    </div>
-                    <div class="news-actions">
-                        <button class="edit-btn" onclick="editNews(${index})">Edit</button>
-                        <button class="delete-btn" onclick="deleteNews(${index})">Delete</button>
-                    </div>
-                `;
-                newsList.appendChild(newsItem);
-            });
-            
-            newsList.style.display = 'grid';
-            noNews.style.display = 'none';
         }
         
         // Add new news article
@@ -635,7 +648,7 @@
             }
             
             // Get existing news
-            const news = JSON.parse(localStorage.getItem('nova-bots-news')) || [];
+            const news = JSON.parse(localStorage.getItem('nova-bots-shared-news')) || [];
             
             // Add new article
             news.push({
@@ -645,8 +658,34 @@
                 date: new Date().toISOString()
             });
             
-            // Save to localStorage
-            localStorage.setItem('nova-bots-news', JSON.stringify(news));
+            // Save to localStorage (in a real app, send to server)
+            localStorage.setItem('nova-bots-shared-news', JSON.stringify(news));
+            
+            // In a real implementation, you would send to your server:
+            /*
+            try {
+                const response = await fetch(`${API_BASE_URL}news`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title,
+                        image: imageData,
+                        content,
+                        date: new Date().toISOString()
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to save news');
+                }
+            } catch (error) {
+                console.error('Error saving news:', error);
+                alert('Error saving news. Please try again.');
+                return;
+            }
+            */
             
             // Reset form
             newsForm.reset();
@@ -659,8 +698,8 @@
         });
         
         // Edit news article
-        function editNews(index) {
-            const news = JSON.parse(localStorage.getItem('nova-bots-news')) || [];
+        async function editNews(index) {
+            const news = JSON.parse(localStorage.getItem('nova-bots-shared-news')) || [];
             const article = news[index];
             
             if (article) {
@@ -670,9 +709,6 @@
                 const newContent = prompt('Edit content:', article.content);
                 if (newContent === null) return;
                 
-                // For now, we'll keep the existing image
-                // In a more advanced version, you could add image re-upload here
-                
                 // Update article
                 news[index] = {
                     title: newTitle,
@@ -681,8 +717,29 @@
                     date: article.date // Keep original date
                 };
                 
-                // Save to localStorage
-                localStorage.setItem('nova-bots-news', JSON.stringify(news));
+                // Save to localStorage (in a real app, send to server)
+                localStorage.setItem('nova-bots-shared-news', JSON.stringify(news));
+                
+                // In a real implementation, you would send to your server:
+                /*
+                try {
+                    const response = await fetch(`${API_BASE_URL}news/${index}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(news[index])
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to update news');
+                    }
+                } catch (error) {
+                    console.error('Error updating news:', error);
+                    alert('Error updating news. Please try again.');
+                    return;
+                }
+                */
                 
                 // Reload news list
                 loadNews();
@@ -692,15 +749,32 @@
         }
         
         // Delete news article
-        function deleteNews(index) {
+        async function deleteNews(index) {
             if (confirm('Are you sure you want to delete this article?')) {
-                const news = JSON.parse(localStorage.getItem('nova-bots-news')) || [];
+                const news = JSON.parse(localStorage.getItem('nova-bots-shared-news')) || [];
                 
                 // Remove article
                 news.splice(index, 1);
                 
-                // Save to localStorage
-                localStorage.setItem('nova-bots-news', JSON.stringify(news));
+                // Save to localStorage (in a real app, send to server)
+                localStorage.setItem('nova-bots-shared-news', JSON.stringify(news));
+                
+                // In a real implementation, you would send to your server:
+                /*
+                try {
+                    const response = await fetch(`${API_BASE_URL}news/${index}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to delete news');
+                    }
+                } catch (error) {
+                    console.error('Error deleting news:', error);
+                    alert('Error deleting news. Please try again.');
+                    return;
+                }
+                */
                 
                 // Reload news list
                 loadNews();
